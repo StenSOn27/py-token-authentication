@@ -85,7 +85,7 @@ class PrivateOrderApiTests(TestCase):
 
         sample_ticket(order)
 
-        response = self.client.delete(f"{ORDER_URL}{order.pk}/")
+        response = self.client.delete(f"{ORDER_URL}1/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 

@@ -5,8 +5,6 @@ from rest_framework import viewsets, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
-from cinema import permissions
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 
 from cinema.permissions import IsAdminOrIfAuthenticatedReadOnly
@@ -127,6 +125,10 @@ class MovieSessionViewSet(
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
     def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return self.queryset
+
         date = self.request.query_params.get("date")
         movie_id_str = self.request.query_params.get("movie")
 
